@@ -1,11 +1,15 @@
+package com.Northstar.game;
+
+import com.Northstar.game.GamePanel;
+
 import javax.swing.JFrame;
 
 public class Window extends JFrame{
 
     public Window(){
-        setTitle("Game");
+        setTitle("YiJian");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new GamePanel(1920,1080));
+        setContentPane(new GamePanel(1280,960));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);

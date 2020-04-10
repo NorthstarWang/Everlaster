@@ -1,3 +1,7 @@
+package com.Northstar.game;
+
+import java.awt.*;
+
 public class GameLauncher {
 
     public GameLauncher() {
