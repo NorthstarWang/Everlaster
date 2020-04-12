@@ -34,6 +34,7 @@ public class Font {
         this.h = h;
 
         System.out.println("Loading: "+ file + "...");
+        FONTSHEET = loadFont(file);
 
         wFont = FONTSHEET.getWidth()/w;
         hFont = FONTSHEET.getHeight()/h;
@@ -63,7 +64,7 @@ public class Font {
         try{
             sprite = ImageIO.read(getClass().getClassLoader().getResourceAsStream(file));
         }catch (Exception e){
-            System.out.println("Error: could be load file: "+ file);
+            System.out.println("Error: could not load file: "+ file);
         }
         return sprite;
     }
@@ -87,11 +88,11 @@ public class Font {
     }
 
     public BufferedImage getFont(char letter){
-        int value = letter;
+        int value = letter - 65;
         int x = value % wFont;
-        int y = value / hFont;
+        int y = value / wFont;
 
-        return FONTSHEET.getSubimage(x,y,w,h);
+        return getLetter(x,y);
     }
 
 }

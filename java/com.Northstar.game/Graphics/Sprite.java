@@ -62,8 +62,9 @@ public class Sprite {
         BufferedImage sprite = null;
         try{
             sprite = ImageIO.read(getClass().getClassLoader().getResourceAsStream(file));
+            System.out.println(getClass().getClassLoader().getResourceAsStream(file));
         }catch (Exception e){
-            System.out.println("Error: could be load file: "+ file);
+            System.out.println("Error: could not load file: "+ file);
         }
         return sprite;
     }
@@ -101,10 +102,11 @@ public class Sprite {
         for(int i = 0; i < img.size();i++){
             if(img.get(i)!=null){
                 g.drawImage(img.get(i),(int) x,(int) y,width,height,null);
+                x += xOffSet;
+                y += yOffSet;
             }
 
-            x += xOffSet;
-            y += yOffSet;
+
         }
     }
 
@@ -115,9 +117,10 @@ public class Sprite {
         for(int i = 0; i < word.length();i++){
             if(word.charAt(i)!=32){
                 g.drawImage(f.getFont(word.charAt(i)),(int) x,(int) y,width,height,null);
+                x += xOffSet;
+                y += yOffSet;
             }
-            x += xOffSet;
-            y += yOffSet;
+
 
         }
     }
