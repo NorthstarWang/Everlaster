@@ -11,7 +11,7 @@ public class Sprite {
 
     private BufferedImage SPRITESHEET = null;
     private BufferedImage[][] spriteArray;
-    private final int TILE_SIZE = 32;
+    private final int TILE_SIZE = 64;
     public int w;
     public int h;
     private int wSprite;
@@ -62,7 +62,6 @@ public class Sprite {
         BufferedImage sprite = null;
         try{
             sprite = ImageIO.read(getClass().getClassLoader().getResourceAsStream(file));
-            System.out.println(getClass().getClassLoader().getResourceAsStream(file));
         }catch (Exception e){
             System.out.println("Error: could not load file: "+ file);
         }
@@ -70,11 +69,11 @@ public class Sprite {
     }
 
     public void loadSpriteArray(){
-        spriteArray = new BufferedImage[wSprite][hSprite];
+        spriteArray = new BufferedImage[hSprite][wSprite];
 
         for(int x= 0;x< wSprite;x++){
             for(int y = 0;y<hSprite;y++){
-                spriteArray[x][y] = getSprite(x,y);
+                spriteArray[y][x] = getSprite(x,y);
             }
         }
     }
