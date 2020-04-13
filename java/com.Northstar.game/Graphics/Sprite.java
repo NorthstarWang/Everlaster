@@ -87,11 +87,11 @@ public class Sprite {
         return SPRITESHEET.getSubimage(x*w,y*h,w,h);
     }
 
-    public BufferedImage[] getSprtieArray(int i){
+    public BufferedImage[] getSpriteArray(int i){
         return spriteArray[i];
     }
 
-    public BufferedImage[][] getSprtieArray2(int i){
+    public BufferedImage[][] getSpriteArray2(int i){
         return spriteArray;
     }
 
