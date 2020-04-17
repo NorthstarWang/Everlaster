@@ -30,6 +30,15 @@ public class Animation {
         numFrames = frames.length;
     }
 
+    public void setIdleFrames(BufferedImage[] frames) {
+        this.frames = frames;
+        currentFrame = 0;
+        count = 0;
+        timesPlayed = 0;
+        delay = 2;
+        numFrames = 4;
+    }
+
     public void setDelay(int i) { delay = i; }
     public void setFrame(int i) { currentFrame = i; }
     public void setNumFrames(int i) { numFrames = i;}

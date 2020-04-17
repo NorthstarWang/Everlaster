@@ -3,8 +3,6 @@ package com.Northstar.game.Entity;
 import com.Northstar.game.Graphics.Animation;
 import com.Northstar.game.Graphics.Sprite;
 import com.Northstar.game.Util.AABB;
-import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
 import com.Northstar.game.Util.Vector2f;
 
 import java.awt.*;
@@ -29,6 +27,7 @@ public abstract class Entity {
     protected boolean right = false;
     protected boolean left = false;
     protected boolean attack = false;
+    protected boolean idle = true;
     protected int attackSpeed;
     protected int attackDuration;
 
@@ -60,6 +59,12 @@ public abstract class Entity {
         ani.setDelay(delay);
     }
 
+    public void setIdleAnimation(int i, BufferedImage[] frames, int delay){
+        currentAnimation = i;
+        ani.setIdleFrames(frames);
+        ani.setDelay(delay);
+    }
+
     public void animate() {
 
         if (up) {
@@ -78,10 +83,12 @@ public abstract class Entity {
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
                 setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 5);
             }
+        }else if(idle){
+            if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
+                setIdleAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
+            }
         }
-        else {
-            setAnimation(currentAnimation,sprite.getSpriteArray(currentAnimation),-1);
-        }
+
     }
 
     private void setHitBoxDirection(){
@@ -107,7 +114,6 @@ public abstract class Entity {
     }
 
     public abstract void render(Graphics2D g);
-    public void input(KeyHandler key, MouseHandler mouse){}
 
     public int getSize(){return size;}
     public Animation getAnimation(){return ani;}

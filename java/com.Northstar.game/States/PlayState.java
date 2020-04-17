@@ -18,7 +18,7 @@ public class PlayState extends GameState {
     public PlayState(GameStateManager gsm){
         super(gsm);
         font = new Font("Font/ZeldaFont.png",16,16);
-        player = new Player(new Sprite("Entity/Player.png"), new Vector2f(300,300),128);
+        player = new Player(new Sprite("Entity/Player.png"), new Vector2f(300,300),64);
     }
 
     public void update(){
@@ -29,7 +29,6 @@ public class PlayState extends GameState {
     };
     public void render(Graphics2D g) {
 
-        Sprite.drawArray(g,font,"Testing",new Vector2f(100,100),32,32,32,0);
         player.render(g);
     }
 }

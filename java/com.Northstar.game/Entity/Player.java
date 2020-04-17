@@ -84,6 +84,7 @@ public class Player extends Entity{
             System.out.println("Play: " + pos.x + " , "+ pos.y);
         }
 
+
             if(key.up.down) {
                 up = true;
             } else {
@@ -109,6 +110,12 @@ public class Player extends Entity{
                 attack = true;
             } else {
                     attack = false;
+            }
+
+            if(!key.isKeypressed){
+                idle = true;
+            }else{
+                idle = false;
             }
     }
 }

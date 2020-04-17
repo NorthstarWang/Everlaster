@@ -9,6 +9,7 @@ import java.util.List;
 
 public class KeyHandler implements KeyListener{
     public static List<Key> keys = new ArrayList<Key>();
+    public boolean isKeypressed = false;
 
     public class Key{
         public int presses,absorbs;
@@ -84,11 +85,13 @@ public class KeyHandler implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
+        isKeypressed = true;
         toggle(e, true);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        isKeypressed = false;
         toggle(e, false);
     }
 }
