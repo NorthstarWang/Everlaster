@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Sprite {
 
@@ -61,7 +62,7 @@ public class Sprite {
     private BufferedImage loadSprite(String file){
         BufferedImage sprite = null;
         try{
-            sprite = ImageIO.read(getClass().getClassLoader().getResourceAsStream(file));
+            sprite = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(file)));
         }catch (Exception e){
             System.out.println("Error: could not load file: "+ file);
         }
@@ -98,9 +99,9 @@ public class Sprite {
         float x = pos.x;
         float y = pos.y;
 
-        for(int i = 0; i < img.size();i++){
-            if(img.get(i)!=null){
-                g.drawImage(img.get(i),(int) x,(int) y,width,height,null);
+        for (BufferedImage bufferedImage : img) {
+            if (bufferedImage != null) {
+                g.drawImage(bufferedImage, (int) x, (int) y, width, height, null);
                 x += xOffSet;
                 y += yOffSet;
             }
@@ -123,4 +124,5 @@ public class Sprite {
 
         }
     }
+
 }
