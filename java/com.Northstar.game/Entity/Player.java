@@ -21,10 +21,18 @@ public class Player extends Entity{
 
     private void move() {
         if(up){
-            dy -= acc;
-            if(dy < -maxSpeed){
-                dy = -maxSpeed;
+            if(shift){
+                dy -= acc;
+                if(dy < -maxDash){
+                    dy = -maxDash;
+                }
+            }else{
+                dy -= acc;
+                if(dy < -maxSpeed){
+                    dy = -maxSpeed;
+                }
             }
+
         }else {
             if(dy < 0){
                 dy+= deacc;
@@ -34,9 +42,16 @@ public class Player extends Entity{
             }
         }
         if(down){
-            dy += acc;
-            if(dy > maxSpeed){
-                dy = maxSpeed;
+            if(shift){
+                dy += acc;
+                if(dy > -maxDash){
+                    dy = maxDash;
+                }
+            }else {
+                dy += acc;
+                if (dy > maxSpeed) {
+                    dy = maxSpeed;
+                }
             }
         }else {
             if(dy >0){
@@ -47,9 +62,16 @@ public class Player extends Entity{
             }
         }
         if(left){
-            dx -= acc;
-            if(dx < -maxSpeed){
-                dx = -maxSpeed;
+            if(shift){
+                dx -= acc;
+                if(dx < -maxDash){
+                    dx = -maxDash;
+                }
+            }else {
+                dx -= acc;
+                if (dx < -maxSpeed) {
+                    dx = -maxSpeed;
+                }
             }
         }else {
             if(dx <0){
@@ -60,9 +82,16 @@ public class Player extends Entity{
             }
         }
         if(right){
-            dx += acc;
-            if(dx > maxSpeed){
-                dx = maxSpeed;
+            if(shift){
+                dx += acc;
+                if(dx > maxDash){
+                    dx = maxDash;
+                }
+            }else {
+                dx += acc;
+                if (dx > maxSpeed) {
+                    dx = maxSpeed;
+                }
             }
         }else {
             if(dx > 0){
@@ -77,6 +106,7 @@ public class Player extends Entity{
     @Override
     public void render(Graphics2D g) {
         g.drawImage(ani.getImage(),(int)(pos.x),(int)(pos.y),size,size,null);
+
     }
 
     public void input(MouseHandler mouse, KeyHandler key) {
@@ -105,6 +135,11 @@ public class Player extends Entity{
             } else {
                 right = false;
             }
+            if(key.shift.down){
+                shift = true;
+            }else{
+                shift = false;
+            }
 
             if(key.attack.down) {
                 attack = true;
@@ -116,6 +151,11 @@ public class Player extends Entity{
                 idle = true;
             }else{
                 idle = false;
+            }
+            if(key.enter.down) {
+                attack = true;
+            } else {
+                attack = false;
             }
     }
 }

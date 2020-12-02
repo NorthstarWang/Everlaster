@@ -15,6 +15,10 @@ public abstract class Entity {
     private final int RIGHT = 3;
     private final int LEFT = 2;
     private final int IDLE = 0;
+    private final int SHIFT_DOWN = 5;
+    private final int SHIFT_LEFT = 6;
+    private final int SHIFT_RIGHT = 7;
+    private final int SHIFT_UP = 8;
 
     protected Animation ani;
     protected Sprite sprite;
@@ -26,6 +30,7 @@ public abstract class Entity {
     protected boolean down = false;
     protected boolean right = false;
     protected boolean left = false;
+    protected boolean shift = false;
     protected boolean attack = false;
     protected boolean idle = true;
     protected int attackSpeed;
@@ -35,6 +40,7 @@ public abstract class Entity {
     protected float dy;
 
     protected float maxSpeed = 3f;
+    protected float maxDash = 6f;
     protected float acc =2.5f;
     protected float deacc = 1f;
 
@@ -67,21 +73,37 @@ public abstract class Entity {
 
     public void animate() {
 
-        if (up) {
+        if (up && !shift) {
             if ((currentAnimation != UP || ani.getDelay() == -1)) {
                 setAnimation(UP, sprite.getSpriteArray(UP), 5);
             }
-        } else if (down) {
+        }else if(up && shift){
+            if ((currentAnimation != SHIFT_UP || ani.getDelay() == -1)) {
+                setIdleAnimation(SHIFT_UP, sprite.getSpriteArray(SHIFT_UP), 5);
+            }
+        }else if (down && !shift) {
             if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
                 setAnimation(DOWN, sprite.getSpriteArray(DOWN), 5);
             }
-        } else if (left) {
+        }else if(down && shift){
+            if ((currentAnimation != SHIFT_DOWN || ani.getDelay() == -1)) {
+                setIdleAnimation(SHIFT_DOWN, sprite.getSpriteArray(SHIFT_DOWN), 5);
+            }
+        }else if (left && !shift) {
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
                 setAnimation(LEFT, sprite.getSpriteArray(LEFT), 5);
             }
-        } else if (right) {
+        }else if(left && shift){
+            if ((currentAnimation != SHIFT_LEFT || ani.getDelay() == -1)) {
+                setIdleAnimation(SHIFT_LEFT, sprite.getSpriteArray(SHIFT_LEFT), 5);
+            }
+        }else if (right && !shift) {
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
                 setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 5);
+            }
+        }else if(right && shift){
+            if ((currentAnimation != SHIFT_RIGHT || ani.getDelay() == -1)) {
+                setIdleAnimation(SHIFT_RIGHT, sprite.getSpriteArray(SHIFT_RIGHT), 5);
             }
         }else if(idle){
             if ((currentAnimation != IDLE || ani.getDelay() == -1)) {

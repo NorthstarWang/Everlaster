@@ -1,5 +1,6 @@
 package com.Northstar.game.States;
 
+import com.Northstar.game.Entity.Attack;
 import com.Northstar.game.Entity.Player;
 import com.Northstar.game.Graphics.Sprite;
 import com.Northstar.game.Util.KeyHandler;
@@ -15,13 +16,14 @@ public class PlayState extends GameState {
 
     private Font font;
     private Player player;
+    private Attack attack;
 
-    Rectangle rec = new Rectangle(1280,1280);
+    Rectangle rec = new Rectangle(960,960);
 
     public PlayState(GameStateManager gsm){
         super(gsm);
-        font = new Font("Font/ZeldaFont.png",16,16);
-        player = new Player(new Sprite("Entity/Player.png"), new Vector2f(300,300),128);
+        attack = new Attack(new Sprite("./Resources/Entity/Attack.png"), new Vector2f(300,300),128);
+        player = new Player(new Sprite("./Resources/Entity/Movement.png"), new Vector2f(300,300),128);
     }
 
     public void update(){
@@ -31,7 +33,7 @@ public class PlayState extends GameState {
         player.input(mouse,key);
     }
     public void render(Graphics2D g) {
-        new FontTTF(g,"Arena",rec,"WuXia.ttf");
+        new FontTTF(g,"Arena",rec,"WuXia.ttf",7,100f);
         player.render(g);
     }
 

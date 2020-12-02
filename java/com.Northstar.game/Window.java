@@ -9,7 +9,7 @@ public class Window extends JFrame{
     public Window(){
         setTitle("YiJian");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new GamePanel(1280,1280));
+        setContentPane(new GamePanel(960,960));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
