@@ -26,7 +26,7 @@ public class Player extends Entity {
         bounds.setyOffset(0);
     }
 
-    public void update(Enemy enemy) {
+    public void update() {
         //Change of position in map due to motion
         if(!shift&&attack){
             super.update_attack();
@@ -42,10 +42,7 @@ public class Player extends Entity {
             move();
         }
 
-        //if player attack enemy
-        if(attack && hitBounds.collides(enemy.getBounds())){
-            System.out.println("ouch");
-        }
+        System.out.println(pos.x+" "+pos.y);
 
         //Limit range of movement(can only move within window)
         if(pos.x+dx>map_edge[0]&&pos.x+dx<map_edge[1]){

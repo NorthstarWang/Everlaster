@@ -155,6 +155,15 @@ public class Enemy extends Entity{
         animate();
         ani.update();
         move(player);
+
+
+        //if player attack enemy
+        if (player.hitBounds.collides(getBounds())&&player.attack){
+            System.out.println("ouch");
+        }else if(player.hitBounds.collides(getBounds())){
+            System.out.println("dead");
+        }
+
         //if not contact yet, continue moving until contact player
         if(!checkContact(player)){
             getBounds().getPos().x+=dx;
