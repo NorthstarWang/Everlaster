@@ -1,8 +1,6 @@
 package com.Northstar.game.Entity;
 
 import com.Northstar.game.Graphics.Sprite;
-import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
 import com.Northstar.game.Util.Vector2f;
 
 import java.awt.*;

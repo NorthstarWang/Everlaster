@@ -2,11 +2,13 @@ package com.Northstar.game;
 
 import com.Northstar.game.States.GameStateManager;
 import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -19,19 +21,20 @@ public class GamePanel extends JPanel implements Runnable{
     private BufferedImage img;
     private Graphics2D g;
 
-    private MouseHandler mouse;
     private KeyHandler key;
     private GameStateManager gsm;
 
     public GamePanel(int width, int height){
-        this.width = width;
-        this.height = height;
+        //Set dimensions of the window
+        GamePanel.width = width;
+        GamePanel.height = height;
         setPreferredSize(new Dimension(width,height));
         setFocusable(true);
         requestFocus();
     }
 
     public void addNotify(){
+        //Add thread to run
         super.addNotify();
         if(thread==null){
             thread = new Thread(this,"GameThread");
@@ -40,12 +43,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void init(){
+        //Set flag for while loop
         running = true;
-
+        //Set background for GamePanel
         img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
         g = (Graphics2D)img.getGraphics();
-
-        mouse = new MouseHandler(this);
+        //Initialise event handlers
         key = new KeyHandler(this);
         gsm = new GameStateManager();
     }
@@ -53,59 +56,45 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void run() {
         init();
-
+        //Define check rate of the game
         final double GAME_HERTZ = 60.0;
         final double TBU = 1000000000/GAME_HERTZ;
-
-        final int MUBR =5;
-
         double lastUpdateTime = System.nanoTime();
         double lastRenderTime;
 
         final double TARGET_FPS = 60;
         final double TTBR = 1000000000 /TARGET_FPS;
 
-        int frameCount = 0;
-        int lastSecondTime = (int) (lastUpdateTime / 1000000000);
-        int oldFrameCount = 0;
 
+        //While true
         while(running){
 
             double now = System.nanoTime();
-            int updateCount = 0;
 
-            while ((now-lastUpdateTime)>TBU && (updateCount< MUBR)){
+            //If nano time does not match(latency occur), update immediately
+            while (now - lastUpdateTime > TBU){
                 update();
-                input(mouse,key);
+                input(key);
                 lastUpdateTime+=TBU;
                 draw();
             }
 
-            if(now - lastUpdateTime > TBU){
-                lastUpdateTime = now - TBU;
+            //Every time frame increase, the graphics draw, time iterate
+            input(key);
+            try {
+                render();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            input(mouse,key);
-            render();
             draw();
             lastRenderTime=now;
-            frameCount++;
-
-            int thisSecond = (int)(lastUpdateTime/1000000000);
-            if(thisSecond>lastSecondTime){
-                if(frameCount !=oldFrameCount){
-                    System.out.println("New Second " + thisSecond +"  "+frameCount);
-                    oldFrameCount = frameCount;
-                }
-                frameCount = 0;
-                lastSecondTime = thisSecond;
-            }
             while (now - lastRenderTime < TTBR && now - lastUpdateTime < TBU) {
+                //If still too soon, wait
                 Thread.yield();
-
                 try {
                     Thread.sleep(1);
-                } catch (Exception e) {
-                    System.out.println("ERROR: yielding thread");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
                 now = System.nanoTime();
@@ -113,22 +102,25 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    private void input(MouseHandler mouse, KeyHandler key) {
-        gsm.input(mouse, key);
+    private void input(KeyHandler key) {
+        gsm.input(key);
     }
 
-    private void render() {
-        g.setColor(new Color(244, 224, 235));
-        g.fillRect(0,0,width,height);
+    private void render() throws IOException {
+        //Set background image
+        BufferedImage img = ImageIO.read(new File("Resources/Tile/Map.png"));
+        //Set image dimensions
+        g.drawImage(img,0,0,width,height,null);
         gsm.render(g);
     }
 
     private void update() {
+        //Update game state
         gsm.update();
     }
 
     private void draw() {
-        Graphics g2 = (Graphics) this.getGraphics();
+        Graphics g2 = this.getGraphics();
         g2.drawImage(img,0,0,width,height,null);
         g2.dispose();
     }

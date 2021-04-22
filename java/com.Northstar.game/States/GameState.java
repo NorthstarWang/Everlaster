@@ -1,7 +1,6 @@
 package com.Northstar.game.States;
 
 import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
 
 import java.awt.Graphics2D;
 
@@ -14,7 +13,7 @@ public abstract class GameState {
     }
 
     public abstract void update();
-    public abstract void input(MouseHandler mouse, KeyHandler key);
+    public abstract void input(KeyHandler key);
     public abstract void render(Graphics2D g);
 
 }

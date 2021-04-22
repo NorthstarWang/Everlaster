@@ -1,6 +1,7 @@
 package com.Northstar.game.Util;
 
 public class Vector2f {
+    //Define position
     public float x;
     public float y;
 
@@ -44,10 +45,5 @@ public class Vector2f {
 
     public Vector2f getWorldVar(){
         return new Vector2f(x - worldX, y - worldY);
-    }
-
-    @Override
-    public String toString(){
-        return x + ", " + y;
     }
 }

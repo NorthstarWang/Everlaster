@@ -1,7 +1,6 @@
 package com.Northstar.game.States;
 
 import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
 
 import java.awt.*;
 
@@ -17,7 +16,7 @@ public class GameOverState extends GameState {
     }
 
     @Override
-    public void input(MouseHandler mouse, KeyHandler key) {
+    public void input(KeyHandler key) {
 
     }
 

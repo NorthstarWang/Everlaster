@@ -20,11 +20,21 @@ public abstract class Entity {
     private final int SHIFT_RIGHT = 7;
     private final int SHIFT_UP = 8;
 
+    private final int UP_IDLE = 8;
+    private final int RIGHT_IDLE = 7;
+    private final int LEFT_IDLE = 6;
+
+    private final int RIGHT_ATTACK = 0;
+    private final int LEFT_ATTACK = 2;
+    private final int UP_ATTACK = 4;
+    private final int DOWN_ATTACK = 6;
+
     protected Animation ani;
     protected Sprite sprite;
     protected Vector2f pos;
     protected int size;
     protected int currentAnimation;
+    protected int currentAttackAnimation = -1;
 
     protected boolean up = false;
     protected boolean down = false;
@@ -32,6 +42,8 @@ public abstract class Entity {
     protected boolean left = false;
     protected boolean shift = false;
     protected boolean attack = false;
+    protected boolean pause = false;
+    protected boolean enter = false;
     protected boolean idle = true;
     protected int attackSpeed;
     protected int attackDuration;
@@ -48,85 +60,143 @@ public abstract class Entity {
     protected AABB bounds;
 
     public Entity(Sprite sprite, Vector2f origin, int size) {
+        //Load constructor
         this.sprite = sprite;
         pos = origin;
         this.size  = size;
 
         bounds = new AABB(origin,size,size);
-        hitBounds = new AABB(new Vector2f(origin.x + (size / 2),origin.y),size,size);
+        hitBounds = new AABB(origin,size,size);
+        hitBounds.setxOffset(size/2);
 
         ani = new Animation();
-        setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 10);
     }
 
-    public void setAnimation(int i, BufferedImage[] frames, int delay) {
+    //Mutator methods
+    public void setAnimation(int i, int delay) {
         currentAnimation = i;
-        ani.setFrames(frames);
+        ani.setFrames(i);
+        ani.setDelay(delay);
+        currentAttackAnimation=-1;
+    }
+
+    public void setIdleAnimation(int i,int delay){
+        currentAnimation = i;
+        ani.setIdleFrames(i);
+        ani.setDelay(delay);
+        currentAttackAnimation=-1;
+    }
+
+    public void setIdleAnimationWithOneFrame(int i,int delay) {
+        currentAnimation = i;
+        ani.setOneFrames(i);
+        ani.setDelay(delay);
+        currentAttackAnimation=-1;
+    }
+
+    //Since the attack png has separated each animation in two rows, read differently
+    public void setAttackAnimation(int i, int delay){
+        currentAttackAnimation = i;
+        ani.setAttackFrames(i);
         ani.setDelay(delay);
     }
 
-    public void setIdleAnimation(int i, BufferedImage[] frames, int delay){
+    public void setEnemyAnimation(int i, int delay){
         currentAnimation = i;
-        ani.setIdleFrames(frames);
+        ani.setEnemyFrames(i);
         ani.setDelay(delay);
+    }
+
+    public void attack_animate(){
+        //If there is no animation played yet
+        if(currentAttackAnimation==-1){
+            if(currentAnimation==UP){
+                //if face up
+                setAttackAnimation(UP_ATTACK,5);
+            }else if(currentAnimation==DOWN||currentAnimation==IDLE){
+                //if face down
+                setAttackAnimation(DOWN_ATTACK,5);
+            }else if(currentAnimation==RIGHT){
+                //if face right
+                setAttackAnimation(RIGHT_ATTACK,5);
+            }else if(currentAnimation==LEFT){
+                //if face left
+                setAttackAnimation(LEFT_ATTACK,5);
+            }
+        }
     }
 
     public void animate() {
-
+        currentAttackAnimation=-1;
+        //Play animations according to motion
+        //Normal movements are store in Movement.png
         if (up && !shift) {
             if ((currentAnimation != UP || ani.getDelay() == -1)) {
-                setAnimation(UP, sprite.getSpriteArray(UP), 5);
+                setAnimation(UP, 5);
             }
-        }else if(up && shift){
+        }else if(up){
             if ((currentAnimation != SHIFT_UP || ani.getDelay() == -1)) {
-                setIdleAnimation(SHIFT_UP, sprite.getSpriteArray(SHIFT_UP), 5);
+                setIdleAnimation(SHIFT_UP, 5);
             }
         }else if (down && !shift) {
             if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
-                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 5);
+                setAnimation(DOWN, 5);
             }
-        }else if(down && shift){
+        }else if(down){
             if ((currentAnimation != SHIFT_DOWN || ani.getDelay() == -1)) {
-                setIdleAnimation(SHIFT_DOWN, sprite.getSpriteArray(SHIFT_DOWN), 5);
+                setIdleAnimation(SHIFT_DOWN, 5);
             }
         }else if (left && !shift) {
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
-                setAnimation(LEFT, sprite.getSpriteArray(LEFT), 5);
+                setAnimation(LEFT, 5);
             }
-        }else if(left && shift){
+        }else if(left){
             if ((currentAnimation != SHIFT_LEFT || ani.getDelay() == -1)) {
-                setIdleAnimation(SHIFT_LEFT, sprite.getSpriteArray(SHIFT_LEFT), 5);
+                setIdleAnimation(SHIFT_LEFT, 5);
             }
         }else if (right && !shift) {
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
-                setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 5);
+                setAnimation(RIGHT, 5);
             }
-        }else if(right && shift){
+        }else if(right){
             if ((currentAnimation != SHIFT_RIGHT || ani.getDelay() == -1)) {
-                setIdleAnimation(SHIFT_RIGHT, sprite.getSpriteArray(SHIFT_RIGHT), 5);
+                setIdleAnimation(SHIFT_RIGHT, 5);
             }
         }else if(idle){
-            if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
-                setIdleAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
+            if(currentAnimation==UP){
+                setIdleAnimationWithOneFrame(UP_IDLE,-1);
+            }else if(currentAnimation==RIGHT){
+                setIdleAnimationWithOneFrame(RIGHT_IDLE,-1);
+            }else if(currentAnimation==LEFT){
+                setIdleAnimationWithOneFrame(LEFT_IDLE,-1);
+            }else if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
+                setIdleAnimation(IDLE, 10);
             }
         }
 
     }
 
-    private void setHitBoxDirection(){
+    public void setHitBoxDirection(){
+        //Set facing direction and attacking range, varies due to direction
         if (up) {
-            hitBounds.setxOffset(-size/2);
             hitBounds.setyOffset(-size/2);
+            hitBounds.setxOffset(0);
         } else if (down) {
             hitBounds.setyOffset(size/2);
-            hitBounds.setxOffset(-size/2);
+            hitBounds.setxOffset(0);
         } else if (left) {
-            hitBounds.setxOffset(-size);
+            hitBounds.setxOffset(-size/2);
             hitBounds.setyOffset(0);
         } else if (right) {
-            hitBounds.setxOffset(0);
+            hitBounds.setxOffset(size/2);
             hitBounds.setyOffset(0);
         }
+    }
+
+    public void update_attack(){
+            attack_animate();
+            setHitBoxDirection();
+            ani.update();
     }
 
     public void update() {
@@ -137,6 +207,7 @@ public abstract class Entity {
 
     public abstract void render(Graphics2D g);
 
+    //Accessor method
     public int getSize(){return size;}
     public Animation getAnimation(){return ani;}
     public void setSprite(Sprite sprite){
@@ -148,6 +219,6 @@ public abstract class Entity {
     public void setMaxSpeed(float f){maxSpeed = f;}
     public void setAcc(float f){acc = f;}
     public void setDeacc(float f){deacc = f;}
-    public AABB getBounds(float f){return bounds;}
+    public AABB getBounds(){return bounds;}
 
 }

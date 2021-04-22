@@ -3,8 +3,6 @@ package com.Northstar.game.States;
 
 import com.Northstar.game.GamePanel;
 import com.Northstar.game.Util.KeyHandler;
-import com.Northstar.game.Util.MouseHandler;
-import com.Northstar.game.States.GameState;
 import com.Northstar.game.Util.Vector2f;
 
 import java.awt.Graphics2D;
@@ -16,7 +14,6 @@ public class GameStateManager {
 
     public static Vector2f map;
 
-    public static final int MENU = 0;
     public static final int PLAY = 1;
     public static final int PAUSE = 2;
     public static final int GAMEOVER = 3;
@@ -39,9 +36,6 @@ public class GameStateManager {
         if (state == PLAY) {
             states.add(new PlayState(this));
         }
-        else if (state == MENU) {
-            states.add(new MenuState(this));
-        }
         else if (state == PAUSE) {
             states.add(new PauseState(this));
         }
@@ -63,9 +57,9 @@ public class GameStateManager {
         }
     }
 
-    public void input(MouseHandler mouse, KeyHandler key) {
+    public void input(KeyHandler key) {
         for (int i = 0; i < states.size(); i++) {
-            states.get(i).input(mouse, key);
+            states.get(i).input(key);
         }
     }
 

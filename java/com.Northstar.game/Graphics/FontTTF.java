@@ -32,6 +32,7 @@ public class FontTTF {
         Font font;
         String fname = "Font/"+name;
         try{
+            //Load font file
             InputStream is = FontTTF.class.getClassLoader().getResourceAsStream(fname);
             assert is != null;
             Font origin_font = Font.createFont(Font.TRUETYPE_FONT,is);
@@ -41,6 +42,7 @@ public class FontTTF {
             System.err.println(fname + " not loaded.  Using serif font.");
             font = new Font("serif", Font.PLAIN, 24);
         }
+        //Return font format
         return font;
     }
 }

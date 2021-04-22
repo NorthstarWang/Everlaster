@@ -5,10 +5,10 @@ import java.awt.*;
 public class GameLauncher {
 
     public GameLauncher() {
-        new Window();
+        new Window();//Create a window
     }
 
     public static void main(String [] args){
-        new GameLauncher();
+        new GameLauncher();//launch the game
     }
 }

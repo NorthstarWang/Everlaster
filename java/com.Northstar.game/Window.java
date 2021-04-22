@@ -7,8 +7,10 @@ import javax.swing.JFrame;
 public class Window extends JFrame{
 
     public Window(){
-        setTitle("YiJian");
+        //Window title
+        setTitle("Everlaster");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Window size dimensions
         setContentPane(new GamePanel(960,960));
         pack();
         setLocationRelativeTo(null);
