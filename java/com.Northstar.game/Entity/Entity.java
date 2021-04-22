@@ -41,7 +41,7 @@ public abstract class Entity {
     protected boolean right = false;
     protected boolean left = false;
     protected boolean shift = false;
-    protected boolean attack = false;
+    public boolean attack = false;
     protected boolean pause = false;
     protected boolean enter = false;
     protected boolean idle = true;
@@ -56,8 +56,8 @@ public abstract class Entity {
     protected float acc =2.5f;
     protected float deacc = 1f;
 
-    protected AABB hitBounds;
-    protected AABB bounds;
+    public AABB hitBounds;
+    public AABB bounds;
 
     public Entity(Sprite sprite, Vector2f origin, int size) {
         //Load constructor
@@ -67,7 +67,8 @@ public abstract class Entity {
 
         bounds = new AABB(origin,size,size);
         hitBounds = new AABB(origin,size,size);
-        hitBounds.setxOffset(size/2);
+        hitBounds.setyOffset(size/2);
+        hitBounds.setxOffset(0);
 
         ani = new Animation();
     }

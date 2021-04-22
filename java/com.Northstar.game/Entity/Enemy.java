@@ -1,6 +1,7 @@
 package com.Northstar.game.Entity;
 
 import com.Northstar.game.Graphics.Sprite;
+import com.Northstar.game.States.PlayState;
 import com.Northstar.game.Util.AABB;
 import com.Northstar.game.Util.Vector2f;
 
@@ -90,6 +91,11 @@ public class Enemy extends Entity{
         }
     }
 
+    public boolean checkKilled(Player player){
+        //if player's attack hit bound hit enemy, enemy dead, return true
+        return getBounds().collides(player.hitBounds)&&player.getAnimation().isAttack;
+    }
+
     public void checkDirection(Player player){
         //Check which way the enemy is going and thus find out the sprite direction that should display
         down = false;
@@ -150,27 +156,24 @@ public class Enemy extends Entity{
         g.drawImage(ani.getImage(),(int)(pos.x),(int)(pos.y),size,size,null);
     }
 
-    public void update(Player player) {
+    public int update(Player player) {
         checkDirection(player);
         animate();
         ani.update();
         move(player);
 
-
-        //if player attack enemy
-        if (player.hitBounds.collides(getBounds())&&player.attack){
-            System.out.println("ouch");
-        }else if(player.hitBounds.collides(getBounds())){
-            System.out.println("dead");
-        }
-
         //if not contact yet, continue moving until contact player
         if(!checkContact(player)){
+            if(checkKilled(player)){
+                //if enemy dead, return 1
+                return 1;
+            }
             getBounds().getPos().x+=dx;
             getBounds().getPos().y+=dy;
-        }else{
-            //if contact, enemy disappear and deduct hp
-
+            return 0;
+        } else{
+            //if enemy should kill player, return 2
+            return 2;
         }
     }
 }

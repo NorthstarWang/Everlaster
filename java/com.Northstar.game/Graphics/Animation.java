@@ -12,6 +12,7 @@ public class Animation {
     private int delay;
     private int row = 0;
     private int attack_row;
+    public boolean isAttack;
 
     private boolean attack;
 
@@ -91,11 +92,12 @@ public class Animation {
     public void setNumFrames(int i) { numFrames = i;}
 
     public void update() {
+        isAttack=false;
         //Infinitely replay the sprite sheet so that the character animation play smoothly if delay if not set to -1
         if(attack){
 
             count++;
-
+            isAttack = true;
             if(count == delay) {
                 currentFrame++;
                 count = 0;
@@ -108,6 +110,7 @@ public class Animation {
                     row = (row == 0) ? 1 : 0;
                     this.frames = attack_sprite.getSpriteArray(1 + attack_row);
                 }else{
+                    isAttack = false;
                     attack = false;
                     setIdleFrames(0);
                     setDelay(10);

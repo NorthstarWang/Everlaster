@@ -17,7 +17,7 @@ import java.util.Vector;
 public class PlayState extends GameState {
 
     private Player player;
-    private List<Enemy> enemyList;
+    public List<Enemy> enemyList;
     public int EnemyNumber = 1;
 
     Rectangle rec = new Rectangle (960,960);
@@ -30,6 +30,10 @@ public class PlayState extends GameState {
         for (int i = 0; i < EnemyNumber; i++) {
             enemyList.add(new Enemy(new Sprite("./Resources/Entity/Enemy.png"), new Vector2f(randowX(),randowY()),128));
         }
+    }
+
+    public void removeEnemy(Enemy enemy){
+        enemyList.remove(enemy);
     }
 
     public int randowX(){
@@ -51,10 +55,28 @@ public class PlayState extends GameState {
     public void update(){
         //Update Dimensions
         player.update();
-        for (Enemy enemy :
-                enemyList) {
-            enemy.update(player);
+        if(enemyList.size()>0){
+            //if there is still enemy in list(alive)
+            for (int i = enemyList.size() - 1; i >= 0; i--) {
+                Enemy enemy = enemyList.get(i);
+                int n = enemy.update(player);
+                if(n==1){
+                    //enemy destroy
+                    enemyList.remove(enemy);
+                }else if(n==2){
+                    //player dead
+
+                }
+
+            }
+        }else{
+            //if no enemy alive, increase difficulty
+            EnemyNumber++;
+            for (int i = 0; i < EnemyNumber; i++) {
+                enemyList.add(new Enemy(new Sprite("./Resources/Entity/Enemy.png"), new Vector2f(randowX(),randowY()),128));
+            }
         }
+
     }
     public void input(KeyHandler key){
         //Read key input

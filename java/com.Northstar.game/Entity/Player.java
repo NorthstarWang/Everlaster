@@ -34,15 +34,13 @@ public class Player extends Entity {
             super.update();
         }
 
-        if(attack&&!shift){
+        if(getAnimation().isAttack&&!shift){
             //if attack button is pressed, no moving allowed and attack are not allowed while dashing
             dy = 0;
             dx = 0;
         }else{
             move();
         }
-
-        System.out.println(pos.x+" "+pos.y);
 
         //Limit range of movement(can only move within window)
         if(pos.x+dx>map_edge[0]&&pos.x+dx<map_edge[1]){
@@ -143,9 +141,11 @@ public class Player extends Entity {
         //render player sprite sheet
         g.drawImage(ani.getImage(), (int) (pos.x), (int) (pos.y), size, size, null);
         //render attack animation, if space button(attack button) pressed, attack
-        if(!shift&&attack){
+        if(!shift&&getAnimation().isAttack){
             g.setColor(Color.RED);
             g.drawRect((int)(hitBounds.getPos().x + hitBounds.getxOffset()),(int)(hitBounds.getPos().y + hitBounds.getyOffset()),(int)hitBounds.getWidth(),(int)(hitBounds.getHeight()));
+            g.setColor(Color.BLUE);
+            g.drawRect((int)(hitBounds.getPos().x+hitBounds.getxOffset()+hitBounds.getWidth()/2),(int)(hitBounds.getPos().y+hitBounds.getyOffset()+hitBounds.getHeight()/2),(int)hitBounds.getWidth(),(int)(hitBounds.getHeight()));
         }
     }
 
