@@ -1,20 +1,37 @@
 package com.Northstar.game.Graphics;
 
 import java.awt.*;
-import java.awt.Font;
 import java.io.InputStream;
 
 public class FontTTF {
-    public FontTTF(String name, Float size){
-        getFont(name,size);
+    public FontTTF(String name, Float size) {
+        getFont(name, size);
     }
 
-    public FontTTF(Graphics g, String text, Rectangle rect,String name, Integer height, Float size){
-        Font font=getFont(name,size);
-        drawCenteredString(g,text,rect,font,height);
+    public FontTTF(Graphics g, String text, Rectangle rect, String name, Integer height, Float size) {
+        Font font = getFont(name, size);
+        drawCenteredString(g, text, rect, font, height);
     }
 
-    public void drawCenteredString(Graphics g, String text, Rectangle rect,Font font, Integer height) {
+    public static Font getFont(String name, Float size) {
+        Font font;
+        String fname = "Font/" + name;
+        try {
+            //Load font file
+            InputStream is = FontTTF.class.getClassLoader().getResourceAsStream(fname);
+            assert is != null;
+            Font origin_font = Font.createFont(Font.TRUETYPE_FONT, is);
+            font = origin_font.deriveFont(size);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.err.println(fname + " not loaded.  Using serif font.");
+            font = new Font("serif", Font.PLAIN, 24);
+        }
+        //Return font format
+        return font;
+    }
+
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font, Integer height) {
         // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
         // Determine the X coordinate for the text
@@ -26,23 +43,5 @@ public class FontTTF {
         g.setFont(font);
         // Draw the String
         g.drawString(text, x, y);
-    }
-
-    public static Font getFont(String name, Float size){
-        Font font;
-        String fname = "Font/"+name;
-        try{
-            //Load font file
-            InputStream is = FontTTF.class.getClassLoader().getResourceAsStream(fname);
-            assert is != null;
-            Font origin_font = Font.createFont(Font.TRUETYPE_FONT,is);
-            font = origin_font.deriveFont(size);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            System.err.println(fname + " not loaded.  Using serif font.");
-            font = new Font("serif", Font.PLAIN, 24);
-        }
-        //Return font format
-        return font;
     }
 }

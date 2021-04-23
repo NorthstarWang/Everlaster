@@ -1,4 +1,4 @@
-package  com.Northstar.game.Util;
+package com.Northstar.game.Util;
 
 import com.Northstar.game.GamePanel;
 
@@ -7,39 +7,10 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyHandler implements KeyListener{
+public class KeyHandler implements KeyListener {
     //Call corresponding function according to key pressed
     public static List<Key> keys = new ArrayList<>();
     public boolean isKeypressed = false;
-
-    public class Key{
-        public int presses, absorbs;
-        public boolean down, clicked;
-        public Key() {
-            keys.add(this);
-        }
-
-        public void toggle(boolean pressed) {
-            //If pressed
-            if(pressed != down) {
-                down = pressed;
-            }
-            if(pressed) {
-                presses++;
-            }
-        }
-
-        public void tick() {
-            if(absorbs < presses) {
-                absorbs++;
-                clicked = true;
-            } else {
-                clicked = false;
-            }
-        }
-    }
-
-
     //Define control keys
     public Key up = new Key();
     public Key down = new Key();
@@ -49,7 +20,6 @@ public class KeyHandler implements KeyListener{
     public Key enter = new Key();
     public Key escape = new Key();
     public Key shift = new Key();
-
     public KeyHandler(GamePanel game) {
         game.addKeyListener(this);
     }
@@ -57,18 +27,19 @@ public class KeyHandler implements KeyListener{
     public void toggle(KeyEvent e, boolean pressed) {
 
         //Define key presses action
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) attack.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_W) up.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_S) down.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_A) left.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_D) right.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
-        if(e.getKeyCode() == KeyEvent.VK_SHIFT) shift.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) attack.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_W) up.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_S) down.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_A) left.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_D) right.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT) shift.toggle(pressed);
     }
+
     public void tick() {
         //avoid multiple click in one down
-        for(int i = 0; i < keys.size(); i++) {
+        for (int i = 0; i < keys.size(); i++) {
             keys.get(i).tick();
         }
     }
@@ -90,5 +61,33 @@ public class KeyHandler implements KeyListener{
         //Deactivate toggle when any key release
         isKeypressed = false;
         toggle(e, false);
+    }
+
+    public class Key {
+        public int presses, absorbs;
+        public boolean down, clicked;
+
+        public Key() {
+            keys.add(this);
+        }
+
+        public void toggle(boolean pressed) {
+            //If pressed
+            if (pressed != down) {
+                down = pressed;
+            }
+            if (pressed) {
+                presses++;
+            }
+        }
+
+        public void tick() {
+            if (absorbs < presses) {
+                absorbs++;
+                clicked = true;
+            } else {
+                clicked = false;
+            }
+        }
     }
 }

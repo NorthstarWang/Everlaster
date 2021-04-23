@@ -1,17 +1,15 @@
 package com.Northstar.game.Entity;
 
 import com.Northstar.game.Graphics.Sprite;
-import com.Northstar.game.States.PlayState;
-import com.Northstar.game.Util.AABB;
 import com.Northstar.game.Util.Vector2f;
 
 import java.awt.*;
 
-public class Enemy extends Entity{
+public class Enemy extends Entity {
 
     public Enemy(Sprite sprite, Vector2f origin, int size) {
         super(sprite, origin, size);
-        setEnemyAnimation(0,10);
+        setEnemyAnimation(0, 10);
 
         acc = 1f;
         maxSpeed = 2f;
@@ -22,7 +20,7 @@ public class Enemy extends Entity{
         bounds.setyOffset(0);
     }
 
-    private boolean checkContact(Player player){
+    private boolean checkContact(Player player) {
         //If the tile of enemy and player contact, return true, else false
         return getBounds().collides(player.getBounds());
     }
@@ -31,11 +29,11 @@ public class Enemy extends Entity{
         //Movement logic
         //The enemy will follow the player position
 
-        if (pos.y>player.pos.y) {
-                dy -= acc;
-                if (dy < -maxSpeed) {
-                    dy = -maxSpeed;
-                }
+        if (pos.y > player.pos.y) {
+            dy -= acc;
+            if (dy < -maxSpeed) {
+                dy = -maxSpeed;
+            }
         } else {
             if (dy < 0) {
                 dy += deacc;
@@ -44,11 +42,11 @@ public class Enemy extends Entity{
                 }
             }
         }
-        if (pos.y<player.pos.y) {
-                dy += acc;
-                if (dy > maxSpeed) {
-                    dy = maxSpeed;
-                }
+        if (pos.y < player.pos.y) {
+            dy += acc;
+            if (dy > maxSpeed) {
+                dy = maxSpeed;
+            }
         } else {
             if (dy > 0) {
                 dy -= deacc;
@@ -57,11 +55,11 @@ public class Enemy extends Entity{
                 }
             }
         }
-        if (pos.x>player.pos.x) {
-                dx -= acc;
-                if (dx < -maxSpeed) {
-                    dx = -maxSpeed;
-                }
+        if (pos.x > player.pos.x) {
+            dx -= acc;
+            if (dx < -maxSpeed) {
+                dx = -maxSpeed;
+            }
         } else {
             if (dx < 0) {
                 dx += deacc;
@@ -70,11 +68,11 @@ public class Enemy extends Entity{
                 }
             }
         }
-        if (pos.x<player.pos.x) {
-                dx += acc;
-                if (dx > maxSpeed) {
-                    dx = maxSpeed;
-                }
+        if (pos.x < player.pos.x) {
+            dx += acc;
+            if (dx > maxSpeed) {
+                dx = maxSpeed;
+            }
         } else {
             if (dx > 0) {
                 dx -= deacc;
@@ -85,12 +83,12 @@ public class Enemy extends Entity{
         }
     }
 
-    public boolean checkKilled(Player player){
+    public boolean checkKilled(Player player) {
         //if player's attack hit bound hit enemy, enemy dead, return true
-        return getBounds().collides(player.hitBounds)&&player.getAnimation().isAttack;
+        return getBounds().collides(player.hitBounds) && player.getAnimation().isAttack;
     }
 
-    public void checkDirection(Player player){
+    public void checkDirection(Player player) {
         //Check which way the enemy is going and thus find out the sprite direction that should display
         down = false;
         up = false;
@@ -103,16 +101,16 @@ public class Enemy extends Entity{
         float y_distance = player.getBounds().getPos().y - getBounds().getPos().y;
 
         //Player is under enemy in map
-        if(Math.abs(x_distance)<Math.abs(y_distance)){
-            if(y_distance>0){
+        if (Math.abs(x_distance) < Math.abs(y_distance)) {
+            if (y_distance > 0) {
                 down = true;
-            }else{
+            } else {
                 up = true;
             }
-        }else{
-            if(x_distance<0){
+        } else {
+            if (x_distance < 0) {
                 left = true;
-            }else{
+            } else {
                 right = true;
             }
         }
@@ -121,27 +119,27 @@ public class Enemy extends Entity{
     @Override
     public void animate() {
         //Play animations according to motion
-        if(up){
+        if (up) {
             int UP = 4;
             if ((currentAnimation != UP || ani.getDelay() == -1)) {
                 setEnemyAnimation(UP, 5);
             }
-        }else if(down){
+        } else if (down) {
             int DOWN = 1;
             if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
                 setEnemyAnimation(DOWN, 5);
             }
-        }else if(left){
+        } else if (left) {
             int LEFT = 2;
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
                 setEnemyAnimation(LEFT, 5);
             }
-        }else if(right){
+        } else if (right) {
             int RIGHT = 3;
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
                 setEnemyAnimation(RIGHT, 5);
             }
-        }else if(idle){
+        } else if (idle) {
             int IDLE = 0;
             if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
                 setEnemyAnimation(IDLE, 10);
@@ -152,7 +150,7 @@ public class Enemy extends Entity{
 
     @Override
     public void render(Graphics2D g) {
-        g.drawImage(ani.getImage(),(int)(pos.x),(int)(pos.y),size,size,null);
+        g.drawImage(ani.getImage(), (int) (pos.x), (int) (pos.y), size, size, null);
     }
 
     public int update(Player player) {
@@ -162,15 +160,15 @@ public class Enemy extends Entity{
         move(player);
 
         //if not contact yet, continue moving until contact player
-        if(!checkContact(player)){
-            if(checkKilled(player)){
+        if (!checkContact(player)) {
+            if (checkKilled(player)) {
                 //if enemy dead, return 1
                 return 1;
             }
-            getBounds().getPos().x+=dx;
-            getBounds().getPos().y+=dy;
+            getBounds().getPos().x += dx;
+            getBounds().getPos().y += dy;
             return 0;
-        } else{
+        } else {
             //if enemy should kill player, return 2
             return 2;
         }

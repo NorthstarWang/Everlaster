@@ -8,12 +8,12 @@ import java.awt.*;
 
 public class Player extends Entity {
     //Edge of the map
-    private final int[] map_edge = {-40,870,-60,830};
+    private final int[] map_edge = {-40, 870, -60, 830};
 
     public Player(Sprite sprite, Vector2f origin, int size) {
         super(sprite, origin, size);
 
-        setIdleAnimation(0,10);
+        setIdleAnimation(0, 10);
 
         acc = 2f;
         maxSpeed = 3f;
@@ -28,25 +28,25 @@ public class Player extends Entity {
 
     public void update() {
         //Change of position in map due to motion
-        if(!shift&&attack){
+        if (!shift && attack) {
             super.update_attack();
-        }else{
+        } else {
             super.update();
         }
 
-        if(getAnimation().isAttack&&!shift){
+        if (getAnimation().isAttack && !shift) {
             //if attack button is pressed, no moving allowed and attack are not allowed while dashing
             dy = 0;
             dx = 0;
-        }else{
+        } else {
             move();
         }
 
         //Limit range of movement(can only move within window)
-        if(pos.x+dx>map_edge[0]&&pos.x+dx<map_edge[1]){
+        if (pos.x + dx > map_edge[0] && pos.x + dx < map_edge[1]) {
             pos.x += dx;
         }
-        if(pos.y+dy>map_edge[2]&&pos.y+dy<map_edge[3]){
+        if (pos.y + dy > map_edge[2] && pos.y + dy < map_edge[3]) {
             pos.y += dy;
         }
     }
