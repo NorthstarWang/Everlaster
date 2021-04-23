@@ -90,7 +90,7 @@ public class PlayState extends GameState {
             }
         }else{
             //if dead, proceed to game over state, record score in text file
-            FileWriter fileWriter = new FileWriter(fileName);
+            FileWriter fileWriter = new FileWriter(fileName,true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(score);
             printWriter.close();

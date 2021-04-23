@@ -89,7 +89,22 @@ public abstract class Entity {
 
     public void setIdleAnimationWithOneFrame(int i,int delay) {
         currentAnimation = i;
-        ani.setOneFrames(i);
+        int n = 0;
+        switch (i){
+            case UP: {
+                n = UP_IDLE;
+                break;
+            }
+            case RIGHT:{
+                n = RIGHT_IDLE;
+                break;
+            }
+            case LEFT:{
+                n = LEFT_IDLE;
+                break;
+            }
+        }
+        ani.setOneFrames(n);
         ani.setDelay(delay);
         currentAttackAnimation=-1;
     }
@@ -164,12 +179,13 @@ public abstract class Entity {
                 setIdleAnimation(SHIFT_RIGHT, 5);
             }
         }else if(idle){
+            System.out.println(currentAnimation);
             if(currentAnimation==UP){
-                setIdleAnimationWithOneFrame(UP_IDLE,-1);
+                setIdleAnimationWithOneFrame(UP,-1);
             }else if(currentAnimation==RIGHT){
-                setIdleAnimationWithOneFrame(RIGHT_IDLE,-1);
+                setIdleAnimationWithOneFrame(RIGHT,-1);
             }else if(currentAnimation==LEFT){
-                setIdleAnimationWithOneFrame(LEFT_IDLE,-1);
+                setIdleAnimationWithOneFrame(LEFT,-1);
             }else if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
                 setIdleAnimation(IDLE, 10);
             }
