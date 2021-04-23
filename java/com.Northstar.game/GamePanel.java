@@ -15,6 +15,8 @@ public class GamePanel extends JPanel implements Runnable{
     public static int width;
     public static int height;
 
+    public static int frame;
+
     private Thread thread;
     public boolean running = false;
 
@@ -62,6 +64,10 @@ public class GamePanel extends JPanel implements Runnable{
         double lastUpdateTime = System.nanoTime();
         double lastRenderTime;
 
+        int frameCount=0;
+        int lastSecondTime = (int) (lastUpdateTime / 1000000000);
+        frame =0;
+
         final double TARGET_FPS = 60;
         final double TTBR = 1000000000 /TARGET_FPS;
 
@@ -81,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable{
 
             //Every time frame increase, the graphics draw, time iterate
             input(key);
+            frameCount++;
             try {
                 render();
             } catch (IOException e) {
@@ -88,6 +95,16 @@ public class GamePanel extends JPanel implements Runnable{
             }
             draw();
             lastRenderTime=now;
+
+            int thisSecond = (int) (lastUpdateTime / 1000000000);
+            if (thisSecond > lastSecondTime) {
+                if (frameCount != frame) {
+                    frame = frameCount;
+                }
+                frameCount = 0;
+                lastSecondTime = thisSecond;
+            }
+
             while (now - lastRenderTime < TTBR && now - lastUpdateTime < TBU) {
                 //If still too soon, wait
                 Thread.yield();

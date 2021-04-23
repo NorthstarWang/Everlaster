@@ -15,7 +15,6 @@ public abstract class Entity {
     private final int RIGHT = 3;
     private final int LEFT = 2;
     private final int IDLE = 0;
-    private final int SHIFT_DOWN = 5;
     private final int SHIFT_LEFT = 6;
     private final int SHIFT_RIGHT = 7;
     private final int SHIFT_UP = 8;
@@ -144,6 +143,7 @@ public abstract class Entity {
                 setAnimation(DOWN, 5);
             }
         }else if(down){
+            int SHIFT_DOWN = 5;
             if ((currentAnimation != SHIFT_DOWN || ani.getDelay() == -1)) {
                 setIdleAnimation(SHIFT_DOWN, 5);
             }

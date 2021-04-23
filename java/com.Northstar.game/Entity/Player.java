@@ -141,12 +141,6 @@ public class Player extends Entity {
         //render player sprite sheet
         g.drawImage(ani.getImage(), (int) (pos.x), (int) (pos.y), size, size, null);
         //render attack animation, if space button(attack button) pressed, attack
-        if(!shift&&getAnimation().isAttack){
-            g.setColor(Color.RED);
-            g.drawRect((int)(hitBounds.getPos().x + hitBounds.getxOffset()),(int)(hitBounds.getPos().y + hitBounds.getyOffset()),(int)hitBounds.getWidth(),(int)(hitBounds.getHeight()));
-            g.setColor(Color.BLUE);
-            g.drawRect((int)(hitBounds.getPos().x+hitBounds.getxOffset()+hitBounds.getWidth()/2),(int)(hitBounds.getPos().y+hitBounds.getyOffset()+hitBounds.getHeight()/2),(int)hitBounds.getWidth(),(int)(hitBounds.getHeight()));
-        }
     }
 
     public void input(KeyHandler key) {

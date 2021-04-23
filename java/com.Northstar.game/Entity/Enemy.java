@@ -9,12 +9,6 @@ import java.awt.*;
 
 public class Enemy extends Entity{
 
-    private final int UP = 4;
-    private final int DOWN = 1;
-    private final int RIGHT = 3;
-    private final int LEFT = 2;
-    private final int IDLE = 0;
-
     public Enemy(Sprite sprite, Vector2f origin, int size) {
         super(sprite, origin, size);
         setEnemyAnimation(0,10);
@@ -128,22 +122,27 @@ public class Enemy extends Entity{
     public void animate() {
         //Play animations according to motion
         if(up){
+            int UP = 4;
             if ((currentAnimation != UP || ani.getDelay() == -1)) {
                 setEnemyAnimation(UP, 5);
             }
         }else if(down){
+            int DOWN = 1;
             if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
                 setEnemyAnimation(DOWN, 5);
             }
         }else if(left){
+            int LEFT = 2;
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
                 setEnemyAnimation(LEFT, 5);
             }
         }else if(right){
+            int RIGHT = 3;
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
                 setEnemyAnimation(RIGHT, 5);
             }
         }else if(idle){
+            int IDLE = 0;
             if ((currentAnimation != IDLE || ani.getDelay() == -1)) {
                 setEnemyAnimation(IDLE, 10);
             }

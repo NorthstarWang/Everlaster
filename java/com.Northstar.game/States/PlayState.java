@@ -2,6 +2,7 @@ package com.Northstar.game.States;
 
 import com.Northstar.game.Entity.Enemy;
 import com.Northstar.game.Entity.Player;
+import com.Northstar.game.GamePanel;
 import com.Northstar.game.Graphics.Sprite;
 import com.Northstar.game.Util.KeyHandler;
 import com.Northstar.game.Util.Vector2f;
@@ -19,13 +20,15 @@ public class PlayState extends GameState {
     private Player player;
     public List<Enemy> enemyList;
     public int EnemyNumber = 1;
+    public int score = 0;
+    public int life = 5;
 
     Rectangle rec = new Rectangle (960,960);
 
     public PlayState(GameStateManager gsm){
         //Load sprite sheet in game
         super(gsm);
-        player = new Player(new Sprite("./Resources/Entity/Movement.png"), new Vector2f(300,300),128);
+        player = new Player(new Sprite("./Resources/Entity/Movement.png"), new Vector2f(416,416),128);
         enemyList = new Vector<Enemy>();
         for (int i = 0; i < EnemyNumber; i++) {
             enemyList.add(new Enemy(new Sprite("./Resources/Entity/Enemy.png"), new Vector2f(randowX(),randowY()),128));
@@ -53,43 +56,84 @@ public class PlayState extends GameState {
     }
 
     public void update(){
-        //Update Dimensions
-        player.update();
-        if(enemyList.size()>0){
-            //if there is still enemy in list(alive)
-            for (int i = enemyList.size() - 1; i >= 0; i--) {
-                Enemy enemy = enemyList.get(i);
-                int n = enemy.update(player);
-                if(n==1){
-                    //enemy destroy
-                    enemyList.remove(enemy);
-                }else if(n==2){
-                    //player dead
+        if (life>0){
+            //if still alive
+            if(!gsm.getstate(GameStateManager.PAUSE)){
+                //If the game is not pause
+                //Update Dimensions
+                player.update();
+                if(enemyList.size()>0){
+                    //if there is still enemy in list(alive)
+                    for (int i = enemyList.size() - 1; i >= 0; i--) {
+                        Enemy enemy = enemyList.get(i);
+                        int n = enemy.update(player);
+                        if(n==1){
+                            //enemy destroy
+                            enemyList.remove(enemy);
+                            score++;
+                        }else if(n==2){
+                            //player get contact by enemy, enemy self destruct, player life decrease
+                            enemyList.remove(enemy);
+                            life--;
+                        }
 
+                    }
+                }else{
+                    //if no enemy alive, increase difficulty
+                    EnemyNumber++;
+                    for (int i = 0; i < EnemyNumber; i++) {
+                        enemyList.add(new Enemy(new Sprite("./Resources/Entity/Enemy.png"), new Vector2f(randowX(),randowY()),128));
+                    }
                 }
-
             }
         }else{
-            //if no enemy alive, increase difficulty
-            EnemyNumber++;
-            for (int i = 0; i < EnemyNumber; i++) {
-                enemyList.add(new Enemy(new Sprite("./Resources/Entity/Enemy.png"), new Vector2f(randowX(),randowY()),128));
-            }
+            //if dead
         }
-
     }
     public void input(KeyHandler key){
+        key.escape.tick();
         //Read key input
         player.input(key);
+        if(key.escape.clicked){
+            //if esc clicked, proceed to pause state
+            if(gsm.getstate(GameStateManager.PAUSE)) {
+                gsm.pop(GameStateManager.PAUSE);
+            }else{
+                gsm.add(GameStateManager.PAUSE);
+            }
+
+        }
     }
     public void render(Graphics2D g) {
         //Add font word onto background image
-        new FontTTF(g,"Everlaster",rec,"WuXia.ttf",7,80f);
         player.render(g);
         for (Enemy enemy :
                 enemyList) {
             enemy.render(g);
         }
+
+        //Load font
+        new FontTTF(g,"Everlaster",rec,"WuXia.ttf",7,20f);
+
+        //render fps and waves count
+        g.setColor(Color.white);
+
+        String fps = GamePanel.frame + " FPS";
+        g.drawString(fps, GamePanel.width - 6 * 32, 32);
+
+        String wave = EnemyNumber + " Waves";
+        g.drawString(wave, GamePanel.width - 6 * 32, 64);
+
+        String scores = "Score: "+score;
+        g.drawString(scores, GamePanel.width - 6 * 32, 96);
+
+        String health = "Life: "+life;
+        if (life <= 2) {
+            g.setColor(Color.RED);
+        }
+        g.drawString(health, GamePanel.width - 6 * 32, 128);
+
+
     }
 
 

@@ -13,8 +13,8 @@ public class KeyHandler implements KeyListener{
     public boolean isKeypressed = false;
 
     public class Key{
-        public int presses;
-        public boolean down;
+        public int presses, absorbs;
+        public boolean down, clicked;
         public Key() {
             keys.add(this);
         }
@@ -28,7 +28,17 @@ public class KeyHandler implements KeyListener{
                 presses++;
             }
         }
+
+        public void tick() {
+            if(absorbs < presses) {
+                absorbs++;
+                clicked = true;
+            } else {
+                clicked = false;
+            }
+        }
     }
+
 
     //Define control keys
     public Key up = new Key();
@@ -55,6 +65,12 @@ public class KeyHandler implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_SHIFT) shift.toggle(pressed);
+    }
+    public void tick() {
+        //avoid multiple click in one down
+        for(int i = 0; i < keys.size(); i++) {
+            keys.get(i).tick();
+        }
     }
 
     @Override

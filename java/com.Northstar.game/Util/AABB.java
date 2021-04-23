@@ -11,7 +11,6 @@ public class AABB {
     private float h;
     private float r;
     private int size;
-    private Entity e;
 
     public AABB(Vector2f pos,int w, int h){
         this.pos = pos;
@@ -24,7 +23,6 @@ public class AABB {
     public AABB(Vector2f pos, int r, Entity e){
         this.pos = pos;
         this.r = r;
-        this.e = e;
         size = r;
 
     }
