@@ -10,10 +10,10 @@ import com.Northstar.game.Util.Vector2f;
 import com.Northstar.game.Graphics.FontTTF;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Vector;
 
 public class PlayState extends GameState {
 
@@ -23,9 +23,11 @@ public class PlayState extends GameState {
     public int score = 0;
     public int life = 5;
 
+    File fileName = new File("./Resources/score.txt");
+
     Rectangle rec = new Rectangle (960,960);
 
-    public PlayState(GameStateManager gsm){
+    public PlayState(GameStateManager gsm) throws FileNotFoundException {
         //Load sprite sheet in game
         super(gsm);
         player = new Player(new Sprite("./Resources/Entity/Movement.png"), new Vector2f(416,416),128);
@@ -55,7 +57,7 @@ public class PlayState extends GameState {
         return  rand.nextBoolean() ?randomNum1:randomNum2;
     }
 
-    public void update(){
+    public void update() throws IOException, URISyntaxException {
         if (life>0){
             //if still alive
             if(!gsm.getstate(GameStateManager.PAUSE)){
@@ -87,10 +89,15 @@ public class PlayState extends GameState {
                 }
             }
         }else{
-            //if dead
+            //if dead, proceed to game over state, record score in text file
+            FileWriter fileWriter = new FileWriter(fileName);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.println(score);
+            printWriter.close();
+            gsm.addAndpop(GameStateManager.GAMEOVER,GameStateManager.PLAY);
         }
     }
-    public void input(KeyHandler key){
+    public void input(KeyHandler key) throws FileNotFoundException, URISyntaxException {
         key.escape.tick();
         //Read key input
         player.input(key);

@@ -8,6 +8,8 @@ import com.Northstar.game.Util.Vector2f;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 
 public class PauseState extends GameState {
 
@@ -17,8 +19,6 @@ public class PauseState extends GameState {
 
     public PauseState(GameStateManager gsm) {
         super(gsm);
-
-
     }
 
     @Override
@@ -27,7 +27,7 @@ public class PauseState extends GameState {
     }
 
     @Override
-    public void input(KeyHandler key) {
+    public void input(KeyHandler key) throws FileNotFoundException, URISyntaxException {
         key.attack.tick();
         key.enter.tick();
         if (key.attack.clicked){

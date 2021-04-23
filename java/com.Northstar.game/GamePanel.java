@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -44,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    public void init(){
+    public void init() throws FileNotFoundException, URISyntaxException {
         //Set flag for while loop
         running = true;
         //Set background for GamePanel
@@ -57,7 +59,13 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     public void run() {
-        init();
+        try {
+            init();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         //Define check rate of the game
         final double GAME_HERTZ = 60.0;
         final double TBU = 1000000000/GAME_HERTZ;
@@ -79,14 +87,34 @@ public class GamePanel extends JPanel implements Runnable{
 
             //If nano time does not match(latency occur), update immediately
             while (now - lastUpdateTime > TBU){
-                update();
-                input(key);
+                try {
+                    update();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    input(key);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
                 lastUpdateTime+=TBU;
                 draw();
             }
 
             //Every time frame increase, the graphics draw, time iterate
-            input(key);
+            try {
+                input(key);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             frameCount++;
             try {
                 render();
@@ -119,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    private void input(KeyHandler key) {
+    private void input(KeyHandler key) throws FileNotFoundException, URISyntaxException {
         gsm.input(key);
     }
 
@@ -131,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable{
         gsm.render(g);
     }
 
-    private void update() {
+    private void update() throws IOException, URISyntaxException {
         //Update game state
         gsm.update();
     }

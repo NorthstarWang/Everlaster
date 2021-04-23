@@ -3,6 +3,9 @@ package com.Northstar.game.States;
 import com.Northstar.game.Util.KeyHandler;
 
 import java.awt.Graphics2D;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public abstract class GameState {
 
@@ -12,8 +15,8 @@ public abstract class GameState {
         this.gsm = gsm;
     }
 
-    public abstract void update();
-    public abstract void input(KeyHandler key);
+    public abstract void update() throws IOException, URISyntaxException;
+    public abstract void input(KeyHandler key) throws FileNotFoundException, URISyntaxException;
     public abstract void render(Graphics2D g);
 
 }
