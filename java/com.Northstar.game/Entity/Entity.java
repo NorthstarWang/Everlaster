@@ -173,7 +173,6 @@ public abstract class Entity {
                 setIdleAnimation(SHIFT_RIGHT, 5);
             }
         } else if (idle) {
-            System.out.println(currentAnimation);
             if (currentAnimation == UP) {
                 setIdleAnimationWithOneFrame(UP, -1);
             } else if (currentAnimation == RIGHT) {
