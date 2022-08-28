@@ -19,6 +19,26 @@ Try to survive as long as possible and slay as many enemies as possible in the e
   -	Use W,A,S,D keys during the game to move the character.
   -	Use SHIFT  key with combination of W,A,S,D to dash.
 
+### Application Images
+
+##### Menu
+
+![Index page](./img/Everlaster-menu.png)
+
+##### Scoreboard
+
+![Score Board](./img/Everlaster-score.png)
+
+##### Gaming
+
+![Battle](./img/Everlaster-battle-1.png)
+
+![](./img/Everlaster-battle-2.gif)
+
+##### Death(End Game Scene)
+
+![End](./img/Everlaster-end.png)
+
 ### Author
 [Wang Yang](https://github.com/NorthstarWang)
 
